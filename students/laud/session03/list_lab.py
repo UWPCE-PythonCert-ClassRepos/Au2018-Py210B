@@ -95,10 +95,9 @@ def series_4():
     global fruits
     new_list= fruits.copy()
 
+    print(10*'-', 'Made a clone of the original fruits list. Now reversing the spelling of each fruit name:', 10*'-')
     for i in range(len(new_list)):
         new_list[i] = new_list[i][::-1]
-
-    print(10*'-', 'Made a clone of the original fruits list. Now reversing the spelling of each fruit name:', 10*'-')
     print(new_list)
     print()
 

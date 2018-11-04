@@ -37,3 +37,28 @@ def end_other(a, b):
       return True
   return False
 
+#cat_dog
+def cat_dog(str):
+  catcount = 0
+  dogcount = 0
+  for i in range(len(str)-2):
+    comparestr = "cat"
+    nextstr = str[i:i+3]
+    if nextstr == comparestr:
+      catcount += 1
+  for i in range(len(str)-2):
+    comparestr = "dog"
+    nextstr = str[i:i+3]
+    if nextstr == comparestr:
+      dogcount += 1  
+  return (dogcount == catcount)
+
+#xyz_there
+def xyz_there(str):
+  for i in range(len(str)-2):
+    comparestr = "xyz"
+    nextstr = str[i:i+3]
+    if nextstr == comparestr:
+      if str[i-1] != ".":
+        return True
+  return False
