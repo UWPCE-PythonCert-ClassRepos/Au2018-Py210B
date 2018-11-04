@@ -2,9 +2,9 @@
 import sys
 import random
 import string
+
 # Strip out punctuations, etc
 def cleanup(text):
-    # out = "".join( c for c in string if c not in ('!', ',', '.', ':', '(', ')') )
     lowercase = text.lower()
     exclude = set(string.punctuation)
     out = ''.join( ch for ch in lowercase if ch not in exclude)
