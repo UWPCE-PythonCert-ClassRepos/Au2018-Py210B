@@ -23,13 +23,6 @@ donor_db = {
     "john": [2705.71],
     }
 
-header = (
-    "Donor Name",
-    "Total Given",
-    "Num Gifts",
-    "Average Gift",
-    )
-
 
 def sort_key(sort):
     return sort[1]
