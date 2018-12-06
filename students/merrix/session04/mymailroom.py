@@ -21,20 +21,23 @@ prompt = "\n".join(("Welcome to James Dot Donations!",
 
 
 def view_donor_db():
-    print (donor_db.keys())
-    choose = input("enter a name from the list or a new name to donate: ").title()
-    if choose not in donor_db.keys():
-        add_donor_db(choose)
-    elif choose in donor_db.keys():
-        donation = int(input("Enter an amount to donate to %s " % choose)) 
-        donor_db[choose].append(int(donation))
-        print (donor_db)
-        print ('''
-        Thank you %s for your donation of $%i to this organization. 
-        We really appreciate your generousity and hope to see you again at our upcoming events.
-        Sincerely Yours
-        James Dot
-        ''' % (choose, donation))
+    try:
+        print (donor_db.keys())
+        choose = input("enter a name from the list or a new name to donate: ").title()
+        if choose not in donor_db.keys():
+            add_donor_db(choose)
+        elif choose in donor_db.keys():
+            donation = int(input("Enter an amount to donate to %s " % choose)) 
+            donor_db[choose].append(int(donation))
+            print (donor_db)
+            print ('''
+            Thank you %s for your donation of $%i to this organization. 
+            We really appreciate your generousity and hope to see you again at our upcoming events.
+            Sincerely Yours
+            James Dot
+            ''' % (choose, donation))
+    except ValueError
+        print("enter a vlid in")
 
 
 
