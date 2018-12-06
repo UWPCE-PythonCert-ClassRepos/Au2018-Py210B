@@ -1,4 +1,6 @@
 import sys  # imports go at the top of the file
+import math 
+
 from collections import defaultdict
 
 donor_db = defaultdict(list)
@@ -60,14 +62,14 @@ def user_Report():
         num_of_gift = len(donations)
         total_given = int(sum(donations))
         average_gift = int(total_given/num_of_gift)
-        print ('{0:<15}   {1:^10}     {2:^6}     {3:8}'.format(name, total_given, num_of_gift, average_gift))
+        return('{0:<15}   {1:^10}     {2:^6}     {3:8}'.format(name, total_given, num_of_gift, average_gift))
         
 
 def send_letters():
     for donor_name in donor_db:
         letter = open('{}.txt'.format(donor_name), "w+")
         email_letter = '''Hello %s,
-          Thank you for your donation to the organization, this is a thank you emailto show our appreciation.
+          Thank you for your donation to the organization, this is a thank you email to show our appreciation.
           ''' % (donor_name)
         letter.write(email_letter)
 
