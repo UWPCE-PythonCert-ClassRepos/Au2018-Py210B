@@ -69,6 +69,10 @@ class DonorCollection:
         self.donor_collection = []
 
     def donor_update(self, name, initial_donation=None):
+        """ Method to add donation if donor exists or
+        creates new Donor object if the donor does not exist
+        """
+
         donor = self.search_name(name)
         if donor:
             donor.add_donation(name, initial_donation)
@@ -81,25 +85,33 @@ class DonorCollection:
 
     def create_report(self):
         reportbody = self.report_header()
-        for donor in self.donor_collection:
-            reportbody = "\n".join([reportbody, "{:<27}${:>11.2f} {:>11d}  ${:>12.2f}".format(donor.name, donor.totaldonations / 100,                            donor.number_donations, donor.average_donation / 100)])
+        for donor in self.collect_data():
+            dobject = self.search_name(donor)
+            reportbody = "\n".join([reportbody, "{:<27}${:>11.2f} {:>11d}  ${:>12.2f}".format(dobject.name,
+                                    dobject.totaldonations / 100, dobject.number_donations, dobject.average_donation / 100)])
         return reportbody
 
     def search_name(self, searchname):
+        """ Searches collection and returns Donor object if exists """
+
         for donor in self.donor_collection:
             if donor.name == searchname:
                 return donor
         return None
 
     def donor_namelist(self):
+        """ Creates and returns a list of donor names from collection """
+
         donorlist = []
         for donor in self.donor_collection:
             donorlist.append(donor.name)
         return donorlist
 
     def collect_data(self):
+        """ Creates sorted list of donors """
+
         letterdata = {}
         for donor in self.donor_collection:
             letterdata[donor.name] = donor.totaldonations / 100
-        print(letterdata)
-        return letterdata
+
+        return sorted(letterdata)
