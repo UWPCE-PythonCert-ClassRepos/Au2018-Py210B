@@ -2,10 +2,12 @@
 
 """ Mailroom_oo Main """
 
-from mailroom_oo.donor_models import *
+from donor_models import *
+
+donor_database = DonorCollection()
 
 
-def newdonor():
+def newdonor_donation():
     """ Adds new donor to the donorDB """
 
     while True:
@@ -16,7 +18,38 @@ def newdonor():
             print(donor_database.donor_namelist())
         else:
             donationamount = input("Enter donation amount> ")
-            donor_database.new_donor(name, donationamount)
+            if donationamount:
+                donor_database.donor_update(name, int(float(donationamount) * 100))
+                printthankyou(name, float(donationamount))
+            else:
+                donor_database.donor_update(name)
+            break
+
+
+def printreport():
+    print(donor_database.create_report())
+
+
+def printthankyou(name, donationamount):
+    """Prints the thank you letter to standard output
+    :param donorname: the index to the donor in the database the letter should
+                    be addressed too
+    """
+    print(donor_database.THANK_YOU_LETTER.format(name=name, amount=donationamount))
+
+
+def writeallletters():
+    """ Write a letter to a file for each donor. """
+
+    for name, donation in donor_database.collect_data():
+        filename = name.replace(' ', '_') + ".txt"
+
+        formatdict = {"name": name, "totaldonation": donation}
+        try:
+            with open(filename, 'w') as outfile:
+                outfile.write(donor_database.GENERAL_DONATION_LETTER.format(**formatdict))
+        except IOError:
+            print("Error: Cannot create letters.")
             break
 
 
@@ -30,12 +63,12 @@ def exit_program():
 def main():
     """ Mailroom_oo main program loop with menu """
 
-    donor_database = DonorCollection()
-
     menudict = {
-        '1': newdonor,
-        '2': printreport,
-        '3': sendletters,
+        '1': newdonor_donation,
+        '2': newdonor_donation,
+        '3': printthankyou,
+        '4': printreport,
+        '5': writeallletters,
         '6': exit_program}
 
     mainmenu = "\n".join(("Welcome to the mailroom!",
@@ -54,9 +87,11 @@ def main():
         try:
             if menudict.get(choice)() == "exit":
                 break
-        except TypeError:
+        except TypeError as e:
             print("\nPlease enter a valid menu choice.\n")
+            print(e)
 
 
 if __name__ == "__main__":
+
     main()
