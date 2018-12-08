@@ -100,5 +100,6 @@ class DonorCollection:
     def collect_data(self):
         letterdata = {}
         for donor in self.donor_collection:
-            letterdata[donor.name] = donor.totaldonations
+            letterdata[donor.name] = donor.totaldonations / 100
+        print(letterdata)
         return letterdata
