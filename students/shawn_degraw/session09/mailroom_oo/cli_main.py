@@ -41,7 +41,8 @@ def printthankyou(name, donationamount):
 def writeallletters():
     """ Write a letter to a file for each donor. """
 
-    for name, donation in donor_database.collect_data():
+    for name, donation in donor_database.collect_data().items():
+        print(name, donation)
         filename = name.replace(' ', '_') + ".txt"
 
         formatdict = {"name": name, "totaldonation": donation}
@@ -66,19 +67,17 @@ def main():
     menudict = {
         '1': newdonor_donation,
         '2': newdonor_donation,
-        '3': printthankyou,
-        '4': printreport,
-        '5': writeallletters,
-        '6': exit_program}
+        '3': printreport,
+        '4': writeallletters,
+        '5': exit_program}
 
     mainmenu = "\n".join(("Welcome to the mailroom!",
                           "Please choose from below options:",
                           "1 - Add new donor to database",
                           "2 - Add donation to existing donor",
-                          "3 - Send a Thank You letter",
-                          "4 - Create a Report",
-                          "5 - Send letters to all donors",
-                          "6 - Quit",
+                          "3 - Create a Report",
+                          "4 - Send letters to all donors",
+                          "5 - Quit",
                           ">>> "))
 
     while True:
