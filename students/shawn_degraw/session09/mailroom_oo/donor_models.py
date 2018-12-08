@@ -4,9 +4,9 @@
 
 
 class Donor:
-    """ Donor object
+    """ Donor object containing all donor specific data
     :param name: donor's name
-    :param initial_donation: optional initial donation value
+    :param initial_donation: initial donation value in cents
     """
 
     def __init__(self, name, initial_donation):
@@ -35,7 +35,7 @@ class Donor:
 
     def add_donation(self, name, donation):
         """
-        adds a new donation to the list
+        Adds a new donation to the donor's list
         and recalculates the average donation
         """
 
@@ -45,7 +45,7 @@ class Donor:
 
 class DonorCollection:
     """
-    Holds collection of donor objects
+    Holds collection of donor objects in a list
     and code to operate on entire collection
     """
 
@@ -67,11 +67,13 @@ class DonorCollection:
         self.donor_collection = []
 
     def donor_update(self, name, initial_donation=None):
-        """ Method to add donation if donor exists or
+        """
+        Method to add donation if donor exists or
         creates new Donor object if the donor does not exist
-        Returns True if update successful
+        Returns True if actions are successful
         """
 
+        # Validate the content of initial_donation and format it for storage
         if not initial_donation:
             return False
         else:
@@ -80,6 +82,7 @@ class DonorCollection:
             except ValueError:
                 return False
 
+        # Create donor or update existing donor
         donor = self.search_name(name)
         if donor:
             donor.add_donation(name, formatted_donation)
@@ -93,6 +96,8 @@ class DonorCollection:
                                                     "Num Gifts", "Average Gift")
 
     def create_report(self):
+        """ Generates report line by line and returns report as a string """
+
         reportbody = self.report_header()
         for donor in self.collect_data():
             dobject = self.search_name(donor)
@@ -101,7 +106,9 @@ class DonorCollection:
         return reportbody
 
     def search_name(self, searchname):
-        """ Searches collection and returns Donor object if exists """
+        """
+        Searches collection by donor name
+        and returns Donor object if exists """
 
         for donor in self.donor_collection:
             if donor.name == searchname:
