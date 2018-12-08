@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-""" Mailroom_oo Main """
+""" Mailroom_oo Main menu, including input and output """
 
 from donor_models import *
 
@@ -20,6 +20,7 @@ def newdonor_donation():
             while True:
                 donationamount = input("Enter donation amount> ")
                 if donor_database.donor_update(name, donationamount):
+                    # print thankyou letter, float will work if donor_upate was True
                     printthankyou(name, float(donationamount))
                     break
                 print("Please enter a valid donation.")
