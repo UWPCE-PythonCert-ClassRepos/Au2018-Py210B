@@ -9,12 +9,10 @@ class Donor:
     :param initial_donation: optional initial donation value
     """
 
-    def __init__(self, name, initial_donation=None):
+    def __init__(self, name, initial_donation):
         self.__name = name
-        self.__donations = []
-        if initial_donation is not None:
-            self.__donations.append(initial_donation)
-            self.average_donation = initial_donation
+        self.__donations = [initial_donation]
+        self.average_donation = initial_donation
 
     @property
     def name(self):
@@ -71,13 +69,24 @@ class DonorCollection:
     def donor_update(self, name, initial_donation=None):
         """ Method to add donation if donor exists or
         creates new Donor object if the donor does not exist
+        Returns True if update successful
         """
+
+        if not initial_donation:
+            return False
+        else:
+            try:
+                formatted_donation = int(float(initial_donation) * 100)
+            except ValueError:
+                return False
 
         donor = self.search_name(name)
         if donor:
-            donor.add_donation(name, initial_donation)
+            donor.add_donation(name, formatted_donation)
+            return True
         else:
-            self.donor_collection.append(Donor(name, initial_donation))
+            self.donor_collection.append(Donor(name, formatted_donation))
+            return True
 
     def report_header(self):
         return "{:<26}|{:^13}|{:^11}|{:^14}".format("Donor Name", "Total Given",
@@ -99,16 +108,8 @@ class DonorCollection:
                 return donor
         return None
 
-    def donor_namelist(self):
-        """ Creates and returns a list of donor names from collection """
-
-        donorlist = []
-        for donor in self.donor_collection:
-            donorlist.append(donor.name)
-        return donorlist
-
     def collect_data(self):
-        """ Creates sorted list of donors """
+        """ Creates and returns sorted list of donor names """
 
         letterdata = {}
         for donor in self.donor_collection:
