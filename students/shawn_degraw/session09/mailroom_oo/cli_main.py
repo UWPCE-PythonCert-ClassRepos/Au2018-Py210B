@@ -19,7 +19,7 @@ def newdonor_donation():
         else:
             donationamount = input("Enter donation amount> ")
             if donationamount:
-                donor_database.donor_update(name, int(float(donationamount) * 100))
+                donor_database.donor_update(name, int(float(donationamount) * 100))  # Money stored in cents
                 printthankyou(name, float(donationamount))
             else:
                 donor_database.donor_update(name)
@@ -27,6 +27,7 @@ def newdonor_donation():
 
 
 def printreport():
+    """ Prints report created in the class """
     print(donor_database.create_report())
 
 
@@ -41,11 +42,10 @@ def printthankyou(name, donationamount):
 def writeallletters():
     """ Write a letter to a file for each donor. """
 
-    for name, donation in donor_database.collect_data().items():
-        print(name, donation)
+    for name in donor_database.collect_data():
         filename = name.replace(' ', '_') + ".txt"
 
-        formatdict = {"name": name, "totaldonation": donation}
+        formatdict = {"name": name, "totaldonation": donor_database.search_name(name).totaldonations / 100}
         try:
             with open(filename, 'w') as outfile:
                 outfile.write(donor_database.GENERAL_DONATION_LETTER.format(**formatdict))
