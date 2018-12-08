@@ -7,6 +7,7 @@ from mailroom_oo.donor_models import *
 
 def test_donor_init():
 
+    # Testing for initialization name and donation in cents
     d1 = Donor("Shawn DeGraw", 1000)
     d2 = Donor("Brandon Nguyen", 5000)
 
