@@ -8,21 +8,21 @@ donor_database = DonorCollection()
 
 
 def newdonor_donation():
-    """ Adds new donor to the donorDB """
+    """ Adds new donor to the donorDB or updates existing """
 
     while True:
         name = input("Please enter full name or list> ")
         if name == "":
             print("Please enter valid name.\n")
         elif name == "list":
-            print(donor_database.donor_namelist())
+            print(donor_database.collect_data())
         else:
-            donationamount = input("Enter donation amount> ")
-            if donationamount:
-                donor_database.donor_update(name, int(float(donationamount) * 100))  # Money stored in cents
-                printthankyou(name, float(donationamount))
-            else:
-                donor_database.donor_update(name)
+            while True:
+                donationamount = input("Enter donation amount> ")
+                if donor_database.donor_update(name, donationamount):
+                    printthankyou(name, float(donationamount))
+                    break
+                print("Please enter a valid donation.")
             break
 
 
