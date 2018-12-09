@@ -7,7 +7,12 @@ from donor_models import *
 donor_database = DonorCollection()
 
 
-def newdonor_donation():
+def update_donor_donation():
+    """ Identifies selection as update and not new donor """
+    donor_donation(True)
+
+
+def donor_donation(update_donor=False):
     """ Adds new donor to the donorDB or updates existing """
 
     while True:
@@ -15,21 +20,27 @@ def newdonor_donation():
         if name == "":
             print("Please enter valid name.\n")
         elif name == "list":
-            print(donor_database.collect_data())
+            print('\n'.join(donor_database.collect_data()))
+        elif update_donor and not donor_database.search_name(name):
+            print("Name not found in donor records.")
         else:
-            while True:
-                donationamount = input("Enter donation amount> ")
-                if donor_database.donor_update(name, donationamount):
-                    # print thankyou letter, float will work if donor_upate was True
-                    printthankyou(name, float(donationamount))
-                    break
-                print("Please enter a valid donation.")
-            break
+            goforward = input("Is \"{}\" the correct name (Y/N)? ".format(name))
+            if goforward in ["y", "Y"]:
+                while True:
+                    donationamount = input("Enter donation amount> ")
+                    if donor_database.donor_update(name, donationamount):
+                        # print thankyou letter, float will work if donor_upate was True
+                        printthankyou(name, float(donationamount))
+                        break
+                    print("Please enter a valid donation.")
+                break
 
 
 def printreport():
     """ Prints report created in the class """
+
     print(donor_database.create_report())
+    print()
 
 
 def printthankyou(name, donationamount):
@@ -37,14 +48,17 @@ def printthankyou(name, donationamount):
     :param donorname: the index to the donor in the database the letter should
                     be addressed too
     """
+
     print(donor_database.THANK_YOU_LETTER.format(name=name, amount=donationamount))
 
 
 def writeallletters():
     """ Write a letter to a file for each donor. """
 
-    donor_database.write_letters()
-    print("Letters written to files.\n")
+    if donor_database.write_letters():
+        print("Letters written to files.\n")
+    else:
+        print("Failure to write letters.\n")
 
 
 def exit_program():
@@ -58,8 +72,8 @@ def main():
     """ Mailroom_oo main program loop with menu """
 
     menudict = {
-        '1': newdonor_donation,
-        '2': newdonor_donation,
+        '1': donor_donation,
+        '2': update_donor_donation,
         '3': printreport,
         '4': writeallletters,
         '5': exit_program}
