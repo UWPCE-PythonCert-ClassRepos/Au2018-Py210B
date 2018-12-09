@@ -123,3 +123,17 @@ class DonorCollection:
             letterdata[donor.name] = donor.totaldonations / 100
 
         return sorted(letterdata)
+
+    def write_letters(self):
+        """ Write a letter to a file for each donor. """
+
+        for name in self.collect_data():
+            filename = name.replace(' ', '_') + ".txt"
+
+            formatdict = {"name": name, "totaldonation": self.search_name(name).totaldonations / 100}
+            try:
+                with open(filename, 'w') as outfile:
+                    outfile.write(self.GENERAL_DONATION_LETTER.format(**formatdict))
+            except IOError:
+                print("Error: Cannot create letters.")
+                break
