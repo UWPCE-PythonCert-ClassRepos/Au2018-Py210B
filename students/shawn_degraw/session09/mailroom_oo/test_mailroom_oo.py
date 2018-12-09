@@ -35,15 +35,23 @@ def test_donorcollection():
     dc2 = DonorCollection()
 
     dc2.donor_update("Jane Doe", 20.00)
+    dc2.donor_update(" jane  doe ", 30.00)
 
     assert dc2.search_name("Jane Doe").name == "Jane Doe"
-    assert dc2.search_name("Jane Doe").donations == [2000]
+    assert dc2.search_name("Jane Doe").donations == [2000, 3000]
+    assert dc2.search_name("jane doe").name == "Jane Doe"
 
     assert dc2.collect_data() == ['Jane Doe']
 
-    assert dc2.create_report() == 'Donor Name                | Total Given | Num Gifts | Average Gift \nJane Doe                   $      20.00           1  $       20.00'
 
-    assert dc2.report_header() == 'Donor Name                | Total Given | Num Gifts | Average Gift '
+def test_report():
+
+    dc2 = DonorCollection()
+    dc2.donor_update("Jane Doe", 20.00)
+
+    assert dc2.create_report() == '\nDonor Name                | Total Given | Num Gifts | Average Gift \n------------------------------------------------------------------\nJane Doe                   $      20.00           1  $       20.00'
+
+    assert dc2.report_header() == '\nDonor Name                | Total Given | Num Gifts | Average Gift \n------------------------------------------------------------------'
 
 
 def test_donorcollection_multi():
@@ -68,3 +76,12 @@ def test_invalid_donationentry():
 
     assert not dc1.donor_update("test")
     assert not dc1.donor_update("test", "stringvalue")
+
+
+def test_invalid_nameentry():
+
+    dc2 = DonorCollection()
+    dc2.donor_update("  Test   User  ", 20)
+
+    assert dc2.search_name("Test User")
+    assert dc2.search_name("  Test    User  ")
