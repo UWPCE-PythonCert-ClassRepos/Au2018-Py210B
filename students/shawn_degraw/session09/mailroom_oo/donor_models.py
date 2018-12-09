@@ -69,8 +69,9 @@ class DonorCollection:
     def donor_update(self, name, initial_donation=None):
         """
         Method to add donation if donor exists or
-        creates new Donor object if the donor does not exist
-        Returns True if actions are successful
+        creates new Donor object if the donor does not exist.
+        Returns True if actions are successful.
+        Controls donation data and name data.
         """
 
         # Validate the content of initial_donation and format it for storage
@@ -82,18 +83,26 @@ class DonorCollection:
             except ValueError:
                 return False
 
+        if formatted_donation < 1:
+            return False
+
+        # Storing name without extra spaces
+        formatted_name = " ".join(name.split())
+
         # Create donor or update existing donor
-        donor = self.search_name(name)
+        donor = self.search_name(formatted_name)
         if donor:
-            donor.add_donation(name, formatted_donation)
+            donor.add_donation(formatted_name, formatted_donation)
             return True
         else:
-            self.donor_collection.append(Donor(name, formatted_donation))
+            self.donor_collection.append(Donor(formatted_name, formatted_donation))
             return True
 
     def report_header(self):
-        return "{:<26}|{:^13}|{:^11}|{:^14}".format("Donor Name", "Total Given",
-                                                    "Num Gifts", "Average Gift")
+        """ Creates and returns report header as a string. """
+
+        return "\n{:<26}|{:^13}|{:^11}|{:^14}\n{}".format("Donor Name", "Total Given",
+                                                    "Num Gifts", "Average Gift", "-" * 66)
 
     def create_report(self):
         """ Generates report line by line and returns report as a string """
@@ -111,7 +120,7 @@ class DonorCollection:
         and returns Donor object if exists """
 
         for donor in self.donor_collection:
-            if donor.name == searchname:
+            if donor.name.lower() == " ".join(searchname.split()).lower():
                 return donor
         return None
 
@@ -135,5 +144,5 @@ class DonorCollection:
                 with open(filename, 'w') as outfile:
                     outfile.write(self.GENERAL_DONATION_LETTER.format(**formatdict))
             except IOError:
-                print("Error: Cannot create letters.")
-                break
+                return False
+        return True
