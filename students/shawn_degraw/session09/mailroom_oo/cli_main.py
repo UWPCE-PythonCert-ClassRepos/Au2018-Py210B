@@ -43,16 +43,8 @@ def printthankyou(name, donationamount):
 def writeallletters():
     """ Write a letter to a file for each donor. """
 
-    for name in donor_database.collect_data():
-        filename = name.replace(' ', '_') + ".txt"
-
-        formatdict = {"name": name, "totaldonation": donor_database.search_name(name).totaldonations / 100}
-        try:
-            with open(filename, 'w') as outfile:
-                outfile.write(donor_database.GENERAL_DONATION_LETTER.format(**formatdict))
-        except IOError:
-            print("Error: Cannot create letters.")
-            break
+    donor_database.write_letters()
+    print("Letters written to files.\n")
 
 
 def exit_program():
