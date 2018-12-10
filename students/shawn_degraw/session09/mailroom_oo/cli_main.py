@@ -22,7 +22,8 @@ def donor_donation(update_donor=False):
         elif name == "list":
             print('\n'.join(donor_database.collect_data()))
         elif update_donor and not donor_database.search_name(name):
-            print("Name not found in donor records.")
+            print("Error:  Name not found in donor records.\n")
+            break  # Prevent loop on first entry
         else:
             goforward = input("Is \"{}\" the correct name (Y/N)? ".format(name))
             if goforward in ["y", "Y"]:
@@ -32,7 +33,7 @@ def donor_donation(update_donor=False):
                         # print thankyou letter, float will work if donor_upate was True
                         printthankyou(name, float(donationamount))
                         break
-                    print("Please enter a valid donation.")
+                    print("Error:  Please enter a valid donation.")
                 break
 
 
@@ -44,6 +45,7 @@ def printreport():
 
 
 def printthankyou(name, donationamount):
+
     """Prints the thank you letter to standard output
     :param donorname: the index to the donor in the database the letter should
                     be addressed too
@@ -58,7 +60,7 @@ def writeallletters():
     if donor_database.write_letters():
         print("Letters written to files.\n")
     else:
-        print("Failure to write letters.\n")
+        print("Error:  Failure to write letters.\n")
 
 
 def exit_program():
