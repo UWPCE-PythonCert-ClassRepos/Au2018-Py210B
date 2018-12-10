@@ -89,7 +89,7 @@ class DonorCollection:
         # Storing name without extra spaces
         formatted_name = " ".join(name.split())
 
-        # Create donor or update existing donor
+        # Create donor or update existing donor and print letter
         donor = self.search_name(formatted_name)
         if donor:
             donor.add_donation(formatted_name, formatted_donation)
@@ -102,7 +102,7 @@ class DonorCollection:
         """ Creates and returns report header as a string. """
 
         return "\n{:<26}|{:^13}|{:^11}|{:^14}\n{}".format("Donor Name", "Total Given",
-                                                    "Num Gifts", "Average Gift", "-" * 66)
+                                                          "Num Gifts", "Average Gift", "-" * 66)
 
     def create_report(self):
         """ Generates report line by line and returns report as a string """
