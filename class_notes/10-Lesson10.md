@@ -29,7 +29,8 @@
 
 * More first class functions examples
   * Decorations are in fact an important usage of this concept. See examples in [this link](https://anandology.com/python-practice-book/functional-programming.html#higher-order-functions-decorators).
-    * Try `print(fib(20))` and think about why it takes so long.
+    * See example code at [`examples/decoration.py`](../examples/decoration.py)
+    * Try `print(fib_a(50))` and think about why it takes so long.
     * See how `trace()` can be used to augment (decorate) behavior of the passed function.
     * Notice that Python's `@` decoration is just a syntactic sugar for this.
-    * `memoize()` is a very important technique to avoid unnecessary repeated computation with recursion, and can reduce the running time of the original `fib()` greatly. This can be all achieved by a simple decoration, and in fact there are many decorators available in Python library (that you'll learn and use in the next course).
+    * `memoize()` is a very important technique to avoid unnecessary repeated computation with recursion, and can reduce the running time of the original `fib_a()` greatly. This can be all achieved by a simple decoration, and in fact there are many decorators available in Python library (that you'll learn and use in the next course).
