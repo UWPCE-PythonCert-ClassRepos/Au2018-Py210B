@@ -23,7 +23,7 @@ class Donor:
         return self.__donations
 
     @property
-    def totaldonations(self):
+    def total_donations(self):
         return sum(self.__donations)
 
     @property
@@ -114,7 +114,7 @@ class DonorCollection:
         for donor in self.collect_data():
             dobject = self.search_name(donor)
             reportbody = "\n".join([reportbody, "{:<27}${:>11.2f} {:>11d}  ${:>12.2f}".format(dobject.name,
-                                    dobject.totaldonations / 100, dobject.number_donations, dobject.average_donation / 100)])
+                                    dobject.total_donations / 100, dobject.number_donations, dobject.average_donation / 100)])
         return reportbody
 
     def search_name(self, searchname):
@@ -133,7 +133,7 @@ class DonorCollection:
 
         letterdata = {}
         for donor in self.donor_collection:
-            letterdata[donor.name] = donor.totaldonations / 100
+            letterdata[donor.name] = donor.total_donations / 100
 
         return sorted(letterdata)
 
@@ -143,7 +143,7 @@ class DonorCollection:
         for name in self.collect_data():
             filename = name.replace(' ', '_') + ".txt"
 
-            formatdict = {"name": name, "totaldonation": self.search_name(name).totaldonations / 100}
+            formatdict = {"name": name, "totaldonation": self.search_name(name).total_donations / 100}
             try:
                 with open(filename, 'w') as outfile:
                     outfile.write(self.GENERAL_DONATION_LETTER.format(**formatdict))
