@@ -72,6 +72,9 @@ class DonorCollection:
         creates new Donor object if the donor does not exist.
         Returns True if actions are successful.
         Controls donation data and name data.
+
+        :param name: donor's name
+        :param initial_donation: initial donation value
         """
 
         # Validate the content of initial_donation and format it for storage
@@ -117,7 +120,8 @@ class DonorCollection:
     def search_name(self, searchname):
         """
         Searches collection by donor name
-        and returns Donor object if exists """
+        and returns Donor object if exists
+        :param searchname: donor's name to find """
 
         for donor in self.donor_collection:
             if donor.name.lower() == " ".join(searchname.split()).lower():
