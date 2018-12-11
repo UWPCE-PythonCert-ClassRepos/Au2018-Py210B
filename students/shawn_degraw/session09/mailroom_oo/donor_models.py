@@ -110,12 +110,13 @@ class DonorCollection:
     def create_report(self):
         """ Generates report line by line and returns report as a string """
 
-        reportbody = self.report_header()
+        lines = [self.report_header()]
         for donor in self.collect_data():
             dobject = self.search_name(donor)
-            reportbody = "\n".join([reportbody, "{:<27}${:>11.2f} {:>11d}  ${:>12.2f}".format(dobject.name,
-                                    dobject.total_donations / 100, dobject.number_donations, dobject.average_donation / 100)])
-        return reportbody
+            lines.append("{:<27}${:>11.2f} {:>11d}  ${:>12.2f}".format(dobject.name,
+                         dobject.total_donations / 100, dobject.number_donations,
+                         dobject.average_donation / 100))
+        return '\n'.join(lines)
 
     def search_name(self, searchname):
         """
