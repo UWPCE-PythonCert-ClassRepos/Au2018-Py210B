@@ -23,7 +23,7 @@ class Element(object):
 
     def render(self, out_file, cur_ind=""):
         # loop through the list of contents + recursive render(...)
-        # TODO how to be pure if ELEMENT has abstract_tag instead.
+        # TODO how to be pure if ELEMENT has abstract_tag instead?
         out_file.write(cur_ind + self._open_tag())
         out_file.write("\n")
         for content in self.contents:
