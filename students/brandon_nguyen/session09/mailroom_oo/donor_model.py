@@ -2,10 +2,12 @@
 # Week9 Excercise donor_models.py
 # Student: Brandon Nguyen - Au2018
 
+from datetime import datetime, date
+
 
 # contant to use in all classes
 E_FORMAT = "\n".join(("", "Dear {Name},", "", "Thank you for your "
-                          "kind donation of {LastAmnt:.2f}.",
+                          "recent donation of {LastAmnt:.2f}.",
                           "It will be put to very good use.", "",
                           "Sincerely, ", "", "-The Team\n"))
 
@@ -34,9 +36,9 @@ class Donor:
 
     def donor_rpt_row(self):
         rpt_row = " {:<18}     $  {:>12.2f} {:>6} {:>6} {:>8.2f}"
-        return rpt_row.format(self.__name, self.__total_donation,
-                              self.__number_donations, "$",
-                              self.__average_donation)
+        return rpt_row.format(self.name, self.total_donation,
+                              self.number_donations, "$",
+                              self.average_donation)
 
     @property
     def name(self):
@@ -79,36 +81,54 @@ class DonorCollection:
         self.__donor_db = {}
     # We need data structure and other constants for printing
 
-    @property
-    def donor_db(self):
-        return self.__donor_db
+    # DONOT expose!
+    # @property
+    # def donor_db(self):
+    #     return self.__donor_db
 
     # method to update donation
     def add_donor_db(self, name, donation=None):
-        """ To add donor into collection"""
-        # How best to handle existing donor?
-        # TODO existing donor only take donation?
-
-        # assume donation is ok TODO more
-        self.__donor_db[name] = Donor(name)
+        """ To add donor and donation into collection"""
+        if name not in self.__donor_db:
+            self.__donor_db[name] = Donor(name)
         self.__donor_db[name].add_donation(donation)
 
     def list_donors(self):
         """ quick way to return a list of names in db """
-        lst_names = []
-        [lst_names.append(name) for name in self.__donor_db.keys()]
-        lst_names.sort()
-        return lst_names
+        # lst_names = []
+        # [lst_names.append(name) for name in self.__donor_db.keys()]
+        # Way cleaner way from above to this:
+        lst_names = list(self.__donor_db.keys())
+        return sorted(lst_names)
 
-    # method to return donor in db or collection getName?
-    def get_name(self, name):
-        """need this to assign back to sigle donor"""
+    def get_donor_data(self, name):
+        """need this to assign back to sigle donor use in thank you"""
         return self.__donor_db[name]
 
+    def list_rpt_data(self, donorName=None):
+        """ Return a sorted list of report rows for all donors """
+        header_txt = ("Donor Name              |  Total Given  | Num Gifts |"
+                      " Average Gift")
+        lst_rpt = [header_txt]
+        lst_donors = self.list_donors()
+        # if method call does not have donorName parameter return all
+        if not donorName:
+            [lst_rpt.append(self.get_donor_data(person).donor_rpt_row())
+                for person in self.list_donors()]  # harder to read this!
+        elif donorName in lst_donors:
+            lst_rpt.append(self.get_donor_data(donorName).donor_rpt_row())
+        # TODO more: Think of catcing error or no name exist?.
+        return "\n".join(lst_rpt)
+
+    def ty_letter_all(self):
+        """This is to return a list of stuples of donor's latter and filename"""
+        letters_list = []
+        for personName in self.list_donors():
+            letter = self.get_donor_data(personName).ty_letter()
+            textfile = (personName.replace(" ", "_") + "_" +
+                        str(date.today()).replace(" ", "_")+".txt")
+            letters_list.append((letter, textfile),)
+        return letters_list
+
 # TODO:
-    # 1) method create report maybe also search?
-    # 2) method to send thank you to all
-    # 3) update donation on existing donor
-    # 4) more errors handling
-
-
+    # 4) more errors handling?
