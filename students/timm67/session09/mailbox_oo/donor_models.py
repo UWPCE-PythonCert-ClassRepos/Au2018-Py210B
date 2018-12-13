@@ -103,7 +103,7 @@ class DonorCollection(object):
         return Donor(in_name)
 
     def add_new_donor(self, in_name):
-        if in_name in self._donors.keys():
+        if in_name in self._donors:
             raise ValueError('name [{0}] already exists'.format(in_name))
         new_donor = self.create_new_donor(in_name)
         self._donors[in_name] = new_donor
