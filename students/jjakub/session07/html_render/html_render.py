@@ -66,7 +66,7 @@ class Html(Element):
     tag = "html"
 
     def render(self, out_file, cur_ind=""):
-        out_file.write("<!DOCTYPE html>\n")
+        out_file.write(cur_ind + "<!DOCTYPE html>\n")
         super().render(out_file, cur_ind)
 
 

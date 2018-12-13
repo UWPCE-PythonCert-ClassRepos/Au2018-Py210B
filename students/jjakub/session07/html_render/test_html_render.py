@@ -205,13 +205,12 @@ def test_title():
     t = Title()
     t.append("This is the title")
 
-    file_contents = render_result(t)
+    file_contents = render_result(t).strip()
     print(file_contents)
     assert("This is the title") in file_contents
     assert file_contents.startswith("<title>")
-    # assert file_contents.endswith("</title>")
-    # assert "\n" not in file_contents
-        ### Question: Why is the title row not allowed to end with a line break??
+    assert file_contents.endswith("</title>")
+    assert "\n" not in file_contents
 
 
 def test_attributes():
@@ -267,10 +266,8 @@ def test_indent():
     lines = file_contents.split("\n")
     print(file_contents)
     assert lines[0].startswith("   <") 
-        ### Question: The item at line[0] is the docheader, why would there be a indent before that?
     print(repr(lines[-1]))
     assert lines[-1].startswith("   <")
-        ### Question: The item at line[-1] is the close html tag, why would there be a indent before that?
 
 
 
@@ -313,7 +310,7 @@ def test_element_indent1():
 
     <html>
         this is some text
-    <\html>
+    </html>
 
     More complex indentation should be tested later.
     """
