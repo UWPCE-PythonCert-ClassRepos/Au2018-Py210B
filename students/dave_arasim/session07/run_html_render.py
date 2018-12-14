@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 """
 a simple script can run and test your html rendering classes.
@@ -7,7 +7,7 @@ Uncomment the steps as you add to your rendering.
 
 """
 
-import io
+from io import StringIO
 
 # importing the html_rendering code with a short name for easy typing.
 import html_render as hr
@@ -22,25 +22,27 @@ def render_page(page, filename, indent=None):
     write to file -- very handy!
     """
 
-    # f = io.StringIO()
-    f = io.FileIO(filename, 'w')
+    f = StringIO()
     if indent is None:
         page.render(f)
     else:
         page.render(f, indent)
 
-    # print(f.getvalue())
-    # with open(filename, 'w') as outfile:
-        # outfile.write(f.getvalue())
+    print(f.getvalue())
+    with open(filename, 'w') as outfile:
+        outfile.write(f.getvalue())
 
 
 # Step 1
 #########
 
 page = hr.Element()
+
 page.append("Here is a paragraph of text -- there could be more of them, "
             "but this is enough  to show that we can do some text")
+
 page.append("And here is another piece of text -- you should be able to add any number")
+
 render_page(page, "test_html_output1.html")
 
 # The rest of the steps have been commented out.
@@ -50,81 +52,108 @@ render_page(page, "test_html_output1.html")
 # ##########
 
 page = hr.Html()
+
 body = hr.Body()
-body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-                "but this is enough  to show that we can do some text"))
-body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
+
+body.append(hr.Para("Here is a paragraph of text -- there could be more of them, "
+                 "but this is enough  to show that we can do some text"))
+
+body.append(hr.Para("And here is another piece of text -- you should be able to add any number"))
+
 page.append(body)
+
 render_page(page, "test_html_output2.html")
 
 # # Step 3
 # ##########
 
 page = hr.Html()
+
 head = hr.Head()
 head.append(hr.Title("PythonClass = Revision 1087:"))
+
 page.append(head)
+
 body = hr.Body()
-body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+
+body.append(hr.Para("Here is a paragraph of text -- there could be more of them, "
                  "but this is enough  to show that we can do some text"))
-body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
+body.append(hr.Para("And here is another piece of text -- you should be able to add any number"))
+
 page.append(body)
+
 render_page(page, "test_html_output3.html")
 
 # # Step 4
 # ##########
 
 page = hr.Html()
+
 head = hr.Head()
 head.append(hr.Title("PythonClass = Revision 1087:"))
+
 page.append(head)
+
 body = hr.Body()
-body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+
+body.append(hr.Para("Here is a paragraph of text -- there could be more of them, "
                  "but this is enough  to show that we can do some text",
               style="text-align: center; font-style: oblique;"))
+
 page.append(body)
+
 render_page(page, "test_html_output4.html")
 
 # # Step 5
 # #########
 
 page = hr.Html()
+
 head = hr.Head()
 head.append(hr.Title("PythonClass = Revision 1087:"))
+
 page.append(head)
+
 body = hr.Body()
-body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+
+body.append(hr.Para("Here is a paragraph of text -- there could be more of them, "
                  "but this is enough  to show that we can do some text",
               style="text-align: center; font-style: oblique;"))
+
 body.append(hr.Hr())
+
 page.append(body)
+
 render_page(page, "test_html_output5.html")
 
-# # Step 6
-# #########
+# Step 6
+#########
 
 page = hr.Html()
+
 head = hr.Head()
 head.append(hr.Title("PythonClass = Revision 1087:"))
+
 page.append(head)
+
 body = hr.Body()
 
-body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+body.append(hr.Para("Here is a paragraph of text -- there could be more of them, "
                  "but this is enough  to show that we can do some text",
               style="text-align: center; font-style: oblique;"))
 
 body.append(hr.Hr())
 
 body.append("And this is a ")
-body.append( hr.A("http://google.com", "link") )
+body.append( hr.Anchor("http://google.com", "link") )
 body.append("to google")
 
 page.append(body)
 
 render_page(page, "test_html_output6.html")
-
-# # Step 7
-# #########
+    
+# Step 7
+#########
 
 page = hr.Html()
 
@@ -135,22 +164,22 @@ page.append(head)
 
 body = hr.Body()
 
-body.append( hr.H(2, "PythonClass - Class 6 example") )
+body.append( hr.Header(2, "PythonClass - Class 6 example") )
 
-body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+body.append(hr.Para("Here is a paragraph of text -- there could be more of them, "
                  "but this is enough  to show that we can do some text",
               style="text-align: center; font-style: oblique;"))
 
 body.append(hr.Hr())
 
-list = hr.Ul(id="TheList", style="line-height:200%")
+list = hr.UList(id="TheList", style="line-height:200%")
 
-list.append( hr.Li("The first item in a list") )
-list.append( hr.Li("This is the second item", style="color: red") )
+list.append( hr.List("The first item in a list") )
+list.append( hr.List("This is the second item", style="color: red") )
 
-item = hr.Li()
+item = hr.List()
 item.append("And this is a ")
-item.append( hr.A("http://google.com", "link") )
+item.append( hr.Anchor("http://google.com", "link") )
 item.append("to google")
 
 list.append(item)
@@ -161,8 +190,8 @@ page.append(body)
 
 render_page(page, "test_html_output7.html")
 
-# # Step 8 and 9
-# ##############
+# Step 8 and 9
+##############
 
 page = hr.Html()
 
@@ -175,22 +204,22 @@ page.append(head)
 
 body = hr.Body()
 
-body.append( hr.H(2, "PythonClass - Example") )
+body.append( hr.Header(2, "PythonClass - Example") )
 
-body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+body.append(hr.Para("Here is a paragraph of text -- there could be more of them, "
                  "but this is enough  to show that we can do some text",
                  style="text-align: center; font-style: oblique;"))
 
 body.append(hr.Hr())
 
-list = hr.Ul(id="TheList", style="line-height:200%")
+list = hr.UList(id="TheList", style="line-height:200%")
 
-list.append( hr.Li("The first item in a list") )
-list.append( hr.Li("This is the second item", style="color: red") )
+list.append( hr.List("The first item in a list") )
+list.append( hr.List("This is the second item", style="color: red") )
 
-item = hr.Li()
+item = hr.List()
 item.append("And this is a ")
-item.append( hr.A("http://google.com", "link") )
+item.append( hr.Anchor("http://google.com", "link") )
 item.append("to google")
 
 list.append(item)
