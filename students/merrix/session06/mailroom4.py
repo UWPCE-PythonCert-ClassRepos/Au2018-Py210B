@@ -12,6 +12,7 @@ donor_db = {"William Gates":[653772, 12.17],
             "Mark Zuckerberg": [1663.23, 4300.87, 10432.0]
            }
 
+
 prompt = "\n".join(("Welcome to James Dot Donations!",
           "Please choose from below options:",
           "1 - Send a Thank you",
@@ -56,7 +57,7 @@ def add_donor_db(choose):
 
 
 
-def user_Report():
+def user_Report(donor_db):
     print('Donor Name  | ',  'Total Given | ', 'Num Gift  | ', 'Average Gift')
     for name, donations in donor_db.items():
         num_of_gift = len(donations)
@@ -64,17 +65,16 @@ def user_Report():
         average_gift = int(total_given/num_of_gift)
         return('{0:<15}   {1:^10}     {2:^6}     {3:8}'.format(name, total_given, num_of_gift, average_gift))
         
+def generate_txt(donor_name):
+    return ('''Hello %s,
+        Thank you for your donation to the organization, this is a thank you email to show our appreciation.
+        ''' % (donor_name))
 
 def send_letters():
     for donor_name in donor_db:
         letter = open('{}.txt'.format(donor_name), "w+")
-        email_letter = '''Hello %s,
-          Thank you for your donation to the organization, this is a thank you email to show our appreciation.
-          ''' % (donor_name)
+        email_letter = generate_txt(donor_name)
         letter.write(email_letter)
-
-
-
 
 def exit_program():
     print("Bye!")
@@ -88,7 +88,7 @@ def main():
         if response == "1":
             view_donor_db()
         elif response == "2":
-            user_Report()
+            user_Report(donor_db)
         elif response == "3":
             send_letters()
         elif response == "4":
