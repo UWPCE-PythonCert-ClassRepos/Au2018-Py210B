@@ -23,6 +23,13 @@ donor_db = {
     "john": [2705.71],
     }
 
+header = (
+    "Donor Name",
+    "Total Given",
+    "Num Gifts",
+    "Average Gift",
+    )
+
 
 def sort_key(sort):
     return sort[1]
@@ -82,7 +89,6 @@ def thanks_all():
                                     \n Thank you for the donation of ${} \
                                     \n Sincerely, \
                                     \n The Mailroom Foundation".format(donor, amt))
-
             if path != '':
                 print("\n Letters were successfully saved to {}.\n".format(path))
             else:
