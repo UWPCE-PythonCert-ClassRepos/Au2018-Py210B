@@ -40,7 +40,7 @@ def view_donor_db():
 
 
 
-
+2
 def add_donor_db(choose):
     new_donor = input("Do you want to add %s to the donation list? yes or no " % choose).title()
     if new_donor == "Yes":
@@ -63,7 +63,7 @@ def user_Report(donor_db):
         num_of_gift = len(donations)
         total_given = int(sum(donations))
         average_gift = int(total_given/num_of_gift)
-        return('{0:<15}   {1:^10}     {2:^6}     {3:8}'.format(name, total_given, num_of_gift, average_gift))
+        print('{0:<15}   {1:^10}     {2:^6}     {3:8}'.format(name, total_given, num_of_gift, average_gift))
         
 def generate_txt(donor_name):
     return ('''Hello %s,
