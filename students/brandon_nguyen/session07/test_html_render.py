@@ -291,8 +291,6 @@ def test_attributes():
     assert file_contents[:-1].index(">") > file_contents.index('id="intro"')
     assert file_contents[:file_contents.index(">")].count(" ") == 3
 
-    #assert False
-
 
 ############################################
 # Step 5
@@ -403,8 +401,13 @@ def test_html_doctype():
 
 
 def test_meta_attrs():
-    pass
-
+    """ Test Self closing tag meta """
+    head = Head()
+    head.append(Meta(charset="UTF-8"))
+    file_contents = render_result(head)
+    print(file_contents)
+    assert '<meta ' in file_contents
+    assert ('charset="UTF-8"') in file_contents
 
 # #####################
 # # indentation testing
@@ -460,13 +463,10 @@ def test_multiple_indent():
 def test_element_indent1():
     """
     Tests whether the Element indents at least simple content
-
     we are expecting to to look like this:
-
     <html>
         this is some text
-    <\html>
-
+    </html>
     More complex indentation should be tested later.
     """
     e = Element("this is some text")
