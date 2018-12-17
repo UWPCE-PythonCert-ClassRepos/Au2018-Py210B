@@ -1,23 +1,66 @@
 #!/usr/bin/env python
 
-""" Mailroom_oo Main """
+""" Mailroom_oo Main menu, including input and output """
 
-from mailroom_oo.donor_models import *
+from donor_models import *
+
+donor_database = DonorCollection()
 
 
-def newdonor():
-    """ Adds new donor to the donorDB """
+def update_donor_donation():
+    """ Identifies selection as update and not new donor """
+    donor_donation(True)
+
+
+def donor_donation(update_donor=False):
+    """ Adds new donor to the donorDB or updates existing """
 
     while True:
         name = input("Please enter full name or list> ")
         if name == "":
             print("Please enter valid name.\n")
         elif name == "list":
-            print(donor_database.donor_namelist())
+            print('\n'.join(donor_database.collect_data()))
+        elif update_donor and not donor_database.search_name(name):
+            print("Error:  Name not found in donor records.\n")
+            break  # Prevent loop on first entry
         else:
-            donationamount = input("Enter donation amount> ")
-            donor_database.new_donor(name, donationamount)
-            break
+            goforward = input("Is \"{}\" the correct name (Y/N)? ".format(name))
+            if goforward in ["y", "Y"]:
+                while True:
+                    donationamount = input("Enter donation amount> ")
+                    if donor_database.donor_update(name, donationamount):
+                        # print thankyou letter, float will work if donor_upate was True
+                        printthankyou(name, float(donationamount))
+                        break
+                    print("Error:  Please enter a valid donation.")
+                break
+
+
+def printreport():
+    """ Prints report created in the class """
+
+    print(donor_database.create_report())
+    print()
+
+
+def printthankyou(name, donationamount):
+
+    """Prints the thank you letter to standard output
+    :param donorname: the index to the donor in the database the letter should
+                    be addressed too
+    """
+
+    print(donor_database.THANK_YOU_LETTER.format(name=name, amount=donationamount))
+
+
+def writeallletters():
+    """ Write a letter to a file for each donor. """
+
+    if donor_database.write_letters():
+        print("Letters written to files.\n")
+    else:
+        print("Error:  Failure to write letters.\n")
 
 
 def exit_program():
@@ -30,22 +73,20 @@ def exit_program():
 def main():
     """ Mailroom_oo main program loop with menu """
 
-    donor_database = DonorCollection()
-
     menudict = {
-        '1': newdonor,
-        '2': printreport,
-        '3': sendletters,
-        '6': exit_program}
+        '1': donor_donation,
+        '2': update_donor_donation,
+        '3': printreport,
+        '4': writeallletters,
+        '5': exit_program}
 
     mainmenu = "\n".join(("Welcome to the mailroom!",
                           "Please choose from below options:",
                           "1 - Add new donor to database",
                           "2 - Add donation to existing donor",
-                          "3 - Send a Thank You letter",
-                          "4 - Create a Report",
-                          "5 - Send letters to all donors",
-                          "6 - Quit",
+                          "3 - Create a Report",
+                          "4 - Send letters to all donors",
+                          "5 - Quit",
                           ">>> "))
 
     while True:
@@ -54,9 +95,11 @@ def main():
         try:
             if menudict.get(choice)() == "exit":
                 break
-        except TypeError:
+        except TypeError as e:
             print("\nPlease enter a valid menu choice.\n")
+            print(e)
 
 
 if __name__ == "__main__":
+
     main()
